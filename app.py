@@ -22,25 +22,50 @@ def process_text_with_Lemmatizer(data_set):
 
 
 def main():
-    tab1, tab2 = st.tabs(["Lemmatizer", "Stemmer"])
-    tf_idf_processor = pickle.load(open('preprocess/vectorizer_stemm.pkl', 'rb'))
-    model_stemm =  pickle.load(open('model/model_rf_stemm.pkl', 'rb'))
     st.title('SMS Spam Classifier')
-    try:
-        input_sms = st.text_area("Enter the message")
-        if st.button('Send'):
-            msg = tf_idf_processor.transform([str(input_sms)]).toarray()
-            res = model_stemm.predict(msg)
+    tab1, tab2 = st.tabs(["Lemmatizer", "Stemmer"])
+    with tab1:
+        tab1.subheader("Lemmatizer method")
+        tf_idf_processor_1 = pickle.load(open('preprocess/vectorizer_lemm.pkl', 'rb'))
+        model_lemm =  pickle.load(open('model/model_rf_lemm.pkl', 'rb'))
 
-            with st.spinner('Wait for it...'):
-                time.sleep(1)
+        try:
+            input_sms = st.text_area("Enter the message",key=1)
+            if st.button('Send', key=11):
+                msg = tf_idf_processor_1.transform([str(input_sms)]).toarray()
+                res = model_lemm.predict(msg)
 
-            if res[0]==1:
-                st.warning(warning_message, icon="⚠️")
-            else:
-                st.success(sent_success_message, icon="✅")
-    except Exception as e:
-        st.error(error_message, icon="🚨")
+                with st.spinner('Wait for it...'):
+                    time.sleep(1)
+
+                if res[0]==1:
+                    st.warning(warning_message, icon="⚠️")
+                else:
+                    st.success(sent_success_message, icon="✅")
+        except Exception as e:
+            st.error(error_message, icon="🚨")
+
+    with tab2:
+        tab2.subheader("Stemmer method")
+        tf_idf_processor_2 = pickle.load(open('preprocess/vectorizer_stemm.pkl', 'rb'))
+        model_stemm =  pickle.load(open('model/model_rf_stemm.pkl', 'rb'))
+
+        try:
+            input_sms = st.text_area("Enter the message",key=2)
+            if st.button('Send',key=22):
+                msg = tf_idf_processor_2.transform([str(input_sms)]).toarray()
+                res = model_stemm.predict(msg)
+
+                with st.spinner('Wait for it...'):
+                    time.sleep(1)
+
+                if res[0]==1:
+                    st.warning(warning_message, icon="⚠️")
+                else:
+                    st.success(sent_success_message, icon="✅")
+        except Exception as e:
+            print(e)
+            st.error(error_message, icon="🚨")
 
 
 if __name__=='__main__':
