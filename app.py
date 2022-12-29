@@ -58,7 +58,6 @@ def main():
     st.title('SMS Spam Classifier')
     # tf_idf_processor_1 = pickle.load(open('preprocess/vectorizer_lemm.pkl', 'rb'))
     model_lemm =  pickle.load(open('model/model_rf_lemm.pkl', 'rb'))
-
     try:
         input_sms = st.text_area("Enter the message")
         if st.button('Send'):
